@@ -1,0 +1,64 @@
+# Always use a YAML validator before using it for configurations.
+
+# key-value pairs
+# app: 'user-authentication'
+# app: 'user-authentication \n' # To add special characters like \n, we need the quotes for strings otherwise we do not need quotes.
+
+# app: user-authentication
+# port: 9000
+# version: 1.7
+
+# Objects
+# We can group a bunch of key-value pairs inside and object.
+
+# microservice object with it's attributes.
+# microservice:
+#   app: user-authentication
+#   port: 9000
+#   version: 1.7
+
+# list
+# The list items must be at the same indentation
+
+# list of microservice objects
+microservices:
+  - app: user-authentication
+    port: 9000
+    version: 1.7
+    deployed: yes # boolean - true/yes/on and false/no/off
+  - app: shopping-cart
+    port: 9002
+    version: # list of lists
+    - 1.9
+    - 2.0
+    - 2.1
+  - app: order-list
+    port: 9003
+    version: [1.9, 2.0, 2.1] # list of lists only for primitive types
+
+# list of just the microservice names
+microservices-names:
+  - user-authentication
+  - shopping-cart
+
+# multi-line strings
+multilineString: | # All three lines will be treated as multi lines
+  this is a multiline string
+  and this is the next line
+  next line
+
+# Single-line string written in multiple lines
+singelineString: > # All three lines will be treated a single line
+  this is a single line string,
+  that should be all on one line.
+  some othe stuff
+
+# env variables [environmental variables]
+# .env variables can be inserted in the YAML through the $ sign
+
+# Placeholders
+# Rather than directly placing the values, we put placeholders as reference to the values.
+# The way to use Placeholders is to use {{...}}
+# The values inside {{...}} gets replaced by template generator.
+metadata:
+  name: {{ .Values.service.name }} # .Values.service.name will be replaced by template generator

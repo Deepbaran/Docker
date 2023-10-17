@@ -1,0 +1,49 @@
+> For Persisting data in the containers we need Docker Volumnes.
+
+> Why do we need Docker Volumes?
+- Docker Volumes are used for Data Persistence.
+- So, for databases or stateful applications, we should use Docker Volumes so that the data persists even after the container restarts.
+- Container has a virtual file system where it stores the data. Which means the data will be lost as soon as the container is stopped or restarted or removed and the container starts from a fresh state. So, no data persistence.
+- With Volume, plug the physical file system path (File system in the host) with the Virtual file system path of the container. So,
+Folder in physical host file system is mounted into the virtual file system of Docker.
+- So, when container writes data in it's file system, it automatically gets replicated to the host file system (host). So, when a data is stored in the container it is stored in the host too and that's why when the container restarts the data persists (Container gets the data from the host automatically on restart).
+
+> 3 Volume Types
+- There are 3 types of Volumes in docker:
+    1. Host Volumes:
+        - The first one is created using docker run command.
+            docker run -v <host_dir>:<contianer_dir> ...
+        - In this type of volume we decide where on the host file system the reference is made.
+    2. Anonymous Volumes (As no host dir is provided):
+        - Command:
+            docker run -v <host_dir> ...
+        - In this type of volume we just give the container directory and do not specify which host directory should be mounted.
+        - For each container a folder is generated that gets mounted.
+    3. Named Volumes:
+        - Command:
+            docker run -v name:<contianer_dir> ...
+        - It is same as the Anonymous Volumes. Only difference is that we can provide the name the of the folder on host file system.
+        - The name is upto us. It just references the directory.
+        - So, name refers to the directory in the host that will be mounted and was created by docker.
+        - You can reference the volume by name and not know the exact path.
+        - This type of volume should be used in production.
+        - There are additional benefits of letting Docker create file system on the host.
+
+> Docker Volumes in docker-compose file
+    version: '3'
+    services:
+        mongodb:
+            image: mongo
+            ports:
+             - 27017:27017
+            volumes:
+             - db-data:/var/lib/mysql/data # name:<contianer_dir>
+        mongo-express:
+            image: mongo-express
+            ...
+    volumes:
+        db-data # list all the volumes that we  have defined that we want to mount into the containers
+
+- So, in service level we need to provide all the defined volume named and on container level we need to provide volume names where the data for that container will be persisted along with container_dir.
+- In this way we can provide the same name for two contianers if they need to access the same data (But the container_dir will be different for each container).
+- Docker for Mac creates a linux VM and stores all the Docker data there.

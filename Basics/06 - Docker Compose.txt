@@ -1,0 +1,57 @@
+> For running multiple docker containers, Docker Compose is used.
+
+> With Docker compose we can take the whole docker run command with it's configurations and map it into a file, so that we have a structured commands.
+
+> So, if we need to run 10 docker containers and make them communicate with each other, we can structure them all in a single file using docker compose.
+
+> So, Docker compose is a structures way to contain very normal common docker commands.
+
+> We do not need to do a network configuration in docker compose. Docker compose takes care of creating a common network for all the services/images it is creating containers for.
+
+> When we have two containers where one container depends on another one starting, we can configure the waiting logic in docker-compose.
+
+> When one container tries to connect with another container, it does not need to access the ports, rather the first container can directly access the 2nd container using it's name.
+
+> docker run command vs mongo-docker-compose.yaml
+    - docker run command:
+        docker run -d \
+        --name mongodb \
+        -p 27017:27017 \
+        -e MONGO_INITDB_ROOT_USERNAME=admin \
+        -e MONGO_INITDB_ROOT_PASSWORD=password \
+        --name mongodb \
+        --net mongo-network \
+        mongo
+
+        docker run -d \
+        -p 8081:8081 \
+        -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+        -e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+        --net mongo-network \
+        --name mongo-express \
+        -e ME_CONFIG_MONGODB_SERVER=mongodb \
+        mongo-express
+
+    - mongo-docker-compose.yaml:
+        version:'3' # version of docker-compose
+        services:
+            mongodb: # container name <- name of the container when docker creates a container out of this blueprint
+                image:mongo
+                ports:
+                    - 27017:27017 # HOST:CONTAINER
+                environemt:
+                    MONGO_INITDB_ROOT_USERNAME=admin
+                    MONGO_INITDB_ROOT_PASSWORD=password
+            mongo-express:
+                image:mongo-express
+                ports:
+                    - 8081:8081
+                environemt:
+                    ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+                    ME_CONFIG_MONGODB_ADMINPASSWORD=password
+                    ME_CONFIG_MONGODB_SERVER=mongodb
+
+> Command to start the docker-compose file:
+    docker-compose -f <yaml_file_name> up => This will start all the contianers in the yaml 
+> Stop the docker containers as well as remove the network:
+    docker-compose -f <yaml_file_name> down

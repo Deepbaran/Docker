@@ -1,0 +1,20 @@
+Link - https://www.youtube.com/watch?v=3c-iBn73dDE
+Contents:
+1. What is Docker? What is a Container?
+2. Docker vs Virtual Machine
+3. Docker Installation
+4. Main Commands
+5. Debugging a Container
+6. Demo Project
+    a. Developing with Docker Containers
+    b. Docker Compose - Running multiple services
+    c. Dockerfile - Build own Docker image
+    d. Private Docker Repository (AWS)
+    e. Deploying the containerized App
+7. Volumes - Persisting Data
+
+> The techworld-js project is a demo project that was shown in the course.
+
+> Go though the compose file and the Dockerfile in the techworld-js... directory too.
+
+> Kubernetes is a container orchestration tool which automates the task to deploy multiple contianers in multiple servers in a distributed way.

@@ -1,0 +1,6 @@
+Installing Docker will install the below things:
+1. Docker Engine: It is necessary to run the Docker containers on your laptop.
+2. Docker CLI: It will enable us to execute some Docker commands.
+3. Docker Compose: Technology to orchestrate if we have multiple contianers.
+4. Docker Machine
+5. Kinematic

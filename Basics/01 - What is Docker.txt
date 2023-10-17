@@ -1,0 +1,77 @@
+> What is a Container?
+- A Container is a way to package application with everything they need inside that package.
+- A way to package application with all the necessary dependencies and configuration.
+- Package is portable, just like artifact. And can be easily shared and moved around between development teams and development and operations team.
+- That portability of containers plus everything packaged in one isolated environment gives it some of the advantages that makes development and deployment process more efficient.
+
+> Where do containers live?
+- Now containers are portable and can be moved around. So, containers need to be stored somewhere.
+- Containers are stored in a special storage just to store containers, called "Container Repository".
+- Many companies have their own provate repositories where they store or host their containers, where we can push all of our containers.
+- There is also a public Repository for Docker Containers where we can browse and find any application container that we want. It is called "DockerHub".
+- It is basically a storage for containers.
+
+> How containers improved Application Development?
+- Before Containers:
+    - When we needed to develop something, we needed to install most of the services on our OS directly.
+    - For example, if we needed to develop a python application, and we needed postgres for db and redis for messaging, then every developer would need to install the binaries of those services and configure them and run them on their local development environment.
+    - Depending on each OS environemt, the installation process would be different.
+    - Many steps where something could go wrong.
+    - The setting up the services for the development becomes tedious depending upon how complex our application is.
+    - So, if our application is using 10 different services then we would need to install 10 different services in each of the devices.
+- After Containers:
+    - With Containers, we no longer need to install any of the services directly on our OS because the container is on it's own an isolated OS layer (environemnt) with linux based image.
+    - So, we have packaged all needed configuration in one isolated environemnt.
+    - So, we have postgres with a specific version, packaged with a configuration and the start script inside of one container.
+    - So, as a developer we do not need to go look for the binaries to install in our machine but rather go ahead and check out the container repository to find the specific container and download on our local machine.
+    - And the download step is just one docker command which fetches the container and starts it at the same time.
+    - And regardless of which OS you are on, the docker command for starting the container will not be different. It will exactly be the same.
+    - So if our application depends on 10 different services, we will just need to run 10 different docker commands for each container and that will be it.
+    - This makes setting up our local development environemnt much easier and much more efficient.
+    - With containers we can run same app with 2 different versions in our local environemnt without any conflict.
+
+> Application Deployment:
+- Before Containers:
+    - Development team will develop artifact along with instructions about how to actually install and configure those artifacts on a server.
+    - So, we would have a jar for file or similar for our application and in addition you would have some database service or some other service also with the set of instructions about how to configure and set it up on the server.
+    - So, development team would give those artifacts over to the operations team and the operations team will handle setting up the environment to deploy those applications.
+    - The problem with this type of deployment is that you need to configure everything and install everything directly on the operating system.
+    - This could actually lead to conflict with dependency versions and multiple services running on the same host.
+    - Another problem that could arise from this kind of process is when there is misunderstanding between the development team and the operations team. Becuase everything is in a textual guide as instructions. So, there could be cases where developers forget to mention some important point about configuration. Or when operations team misinterprets some of those instructions.
+    - When this happens, the Operations team needs to go back to the developer team to ask about more details and this could lead to some back and forth communication until the application is successfully deployed on the server.
+- After Containers:
+    - With Containers these processes actually are simplified, because now, you have the developers and operations working in one team to package the whole configurations, dependencies inside the application just as we saw previously.
+    - And since it's already encapsulated in one single environemnt, we do not need to configure any of this directly on the server.
+    - So, the only thing we need to do is run a docker command that pulls that cntainer image that you stored somewhere in the repository and then run it.
+    - No environmental configuration is needed on the server, only thing needed is we have to install and setup the docker run-time on the server before we will be able to run containers there. But that's just one time effort.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+> What is a Container (Technically)?
+- Technically Container is made up of images.
+- So we have layers of stack images on top of each other, and at the base of most of the containers we would have a Linux Base Image (because small in size. Alpine or some other distro).
+- The base images needs to be small, that's why most of them are actually Alpine. Because that will make sure that the container stay small in size which is one of the advantages of using a container.
+- On top of the Base Image we will have the application image.
+- This is the simplified version but ususally we will have more intermediate images that will lead up to the actual application image that us going to run in the container.
+- And on top of that we will have all the configuration data.
+
+    Layer - application image =>     postgres:10.10
+    Layer - intermediate images =>   --------------
+    Layer - linux base image =>      alpine:3.10
+
+> Docker Image vs Docker Container:
+- Docker Image:
+    - It is the actual package with the application, configuration and start script.
+    - It is the artifact, that can be moved around. So, the artifact that is movable is actually the image.
+- Docker Container:
+    - Container is when we pull that image on our local machine and we actually start it.
+    - So, the application inside actually starte, that creates the Container environemnt.
+- So, image is when the application (along with configuration and start script) is not running and just the artifact that is lying around.
+- If we start the artifact and actually run it on our machine, it is a container.
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+

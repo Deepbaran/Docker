@@ -1,0 +1,28 @@
+# Multiple YAML documents
+# Inside one YAML file we can define multiple components
+# And we can separate these components using ---
+# This is handy when we have multiple components for one service and we want to group them in a single YAML file.
+
+appVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquito-config-file
+data:
+  mosquitto.conf:
+    log_dest stdout
+    log_type all
+    log_timestamp true
+    listener 9001
+
+--- 
+
+appVersion: v1
+kind: ConfigMap
+metadata:
+  name: mosquito-config-file
+data:
+  mosquitto.conf:
+    log_dest stdout
+    log_type all
+    log_timestamp true
+    listener 9001

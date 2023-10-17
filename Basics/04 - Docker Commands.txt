@@ -1,0 +1,82 @@
+> Container vs Image:
+    - CONTAINER is a running environment for IMAGE.
+        - application image (postgres, redis, mongo) needs file system (where they can store the log files, configuration files), environemt configs (env variables, etc).
+        - All this environmental stuff are provided by container.
+        - Container also has a port that is binded to it which maked it possible to talk to the application which is running inside of a container.
+        - File System is virtual in Container. So, Contianer has it's own abstarction of an OS including the File System and the environment which is different from the file system and environment of the host machine.
+    - All the artifacts in the DockerHub are images. So, image is the artifact and container is the running environment for it.
+
+> Container Port vs Host Port:
+    - Multiple containers can run on your host machine.
+    - Your laptop has only certain ports available.
+    - We need to create a binding between a port in the laptop (host) and the container.
+    - Conflict when same port on host machine. We can have same containers with same port but they must be bound to two different host ports.
+    - Once the binding is done, we can connect to the running container using the port in the host. And the host will then know how to forwards the request using port binding.
+
+> Docker Commands:
+    - docker images => Check all the existing docker images in the local machine
+
+    - docker rmi <image_id> => Remove the docker image. We must delete containers that refer to this image first.
+
+    - docker rm <container_id> => Remove the docker container
+    
+    - docker pull <image_name> => Pull the docker image from the DockerHub and installs it
+    
+    - docker pull redis:4.0 => Pull redis version 4.0 from DockerHub and starts it
+    
+    - docker run <image_name> => Start the image in a container (Creates a container for the image to run and starts it)[Starts new contianer with a command][Creates a new container with a Docker Image]
+    
+    - docker run redis:4.0 => Runs the docker image redis 4.0. If it does not exist locally then docker will pull it from the Repository and install it first and then will run it.
+    
+    - docker run <image_name> -d => Run the Docker image in a detached mode. With this we will get the ID of the container that is running and the container will not be running in the terminal anymore and we can use the terminal after this and the container will not be affected
+    
+    - docker run -p<host_port>:<container_port> redis => When running redis we are binding the container_port with the specified host_port. To know ehich container_port to use, first run the image without binding to know which port it is picking up and then stop the image and run it later with the binding option. [-p binds host port to container port]
+
+    - docker run -p <host_port>:<container_port> redis -d => Start the binding in a detached mode
+    
+    - docker ps => Contianers that are running
+    
+    - docker ps -a => lists running and stopped container
+    
+    - docker stop <container_id> => Stops the docker Container [We can just provide part of the container id not the whole string]
+    
+    - docker start <container_id> => Starts the Docker container that was stopped [Restarts a already created contianer using the id. Does not create a contianer]
+    
+    - docker exec -it <container_id / container_name> /bin/bash => Using this we can get the terminal of the container. -it is for interactive terminal. For example using this we can access the terminal/cli of redis or postgres or other images that is running in the container and access the logs, env variables, configuration, etc. Since most of the container images are based on some light weight linux distributions, you won't have much of the linux commands or applications installed here, for example curl or some other things. So, we are a little limited here. Some containers might not have /bin/bash installed, for them use sh.
+    
+    - docker logs <container_id / container_name> => get the logs of the container.
+
+    - docker run -d -p 6001:6379 --name redis-older redis:4.0 => Here we are creating a docker container with redis:4.0 image in dispatch mode, bound the host port of 6001 to container port 6379 and setup the container name as redis-older.
+
+    - docker network ls => check the networks in docker (docker provides some network by default)
+
+    - docker network create <network_name> => Create our own docker network to run container in.
+
+    - docker run -p 27017:27017 -d -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=password --name mongodb --net mongo-network  mongo => Running a Mongo Image in a container with custom settings.
+        - The container port 27017 is mapped to host port 27017
+        - The container will run in detached mode
+        - root username is set as admin
+        - root password is set as password
+        - container name is set as mongodb
+        - container will run in docker network mongo-network
+
+    - docker run -d \
+    > -p 8081:8081 \
+    > -e ME_CONFIG_MONGODB_ADMINUSERNAME=admin \
+    > -e ME_CONFIG_MONGODB_ADMINPASSWORD=password \
+    > --net mongo-network \
+    > --name mongo-express \
+    > -e ME_CONFIG_MONGODB_SERVER=mongodb \
+    > mongo-express
+        - Only things to check are:
+            - ME_CONFIG_MONGODB_ADMINUSERNAME refers to the mongodb username
+            - ME_CONFIG_MONGODB_ADMINPASSWORD refers to the mongodb password
+            - ME_CONFIG_MONGODB_SERVER refers to the mongodb container name
+
+    o image_name - tag of the artifact
+    o To run different docker contianers use different terminals as each terminal can start a single container.
+    o In "docker ps" command we see the the port section where the image is running at and the container is listening to incoming request as well as the name of the container along with the container id.
+    o When we specify the binding options, some more containers get created which can see from "docker ps -a" command.
+    o If not version is specified with the pull command, then the latest one is pulled.
+    o environmental variables needs to be specified with -e
+    o When a container is restarted, the data stored in there and it's configurations are lost. So, there is no data persistence in the containers itself. To have persistence in the containers even after theya re restarted, we need to use Docker Volumes.

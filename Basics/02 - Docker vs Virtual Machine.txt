@@ -1,0 +1,20 @@
+> Let's understand what OS is made of.
+    - OS has two layers:
+        1. OS Kernal - Communicates with h/w components like CPU and memory, etc.
+        3. Applications Layer - the applications run on the kernal layer (Based on the kernal). Differnet linux distros implement different applications on top of the same kernal.
+> Docker and VM are both virtualization tools. The main difference is in what part of the OS they virtualize.
+    - Docker:
+        - Docker virtualizes the applciations layer.
+        - So when we download a Docker image, it actually contains the applciations layer of the OS and some other applicaitons installed on top of it.
+        - It uses the Kernal of the host because it does not have it's own kernal.
+    - VM:
+        - VM on the other hand has the applicaitons layer and it's own kernal.
+        - So, it virtualizes the complete OS.
+        - This means that when we download a VM image on your host, it does not use the host kernal, it bootsup it's own kernal.
+> Other differences:
+    - Size: Docker image is much smaller as they just have to implement one layer. Docker images are usually in MB but VM are ususally in GB.
+    - Speed: Docker containers start and run much faster than the VMs. Because everytime we start the VM, we need to boot the OS kernal and the applicaitons on top it.
+    - Compatibility: VM of any OS can run on any OS host. But we can't do this on Docker. Because to run a Linux based Docker image (Applications Layer), we will need a Linux based Kernal, so we cannot run that image on top of a windows based kernal. But for VM, it provides it's own OS kernal, hence it does not depend on the host kernal.
+> The compatibility issues happens for older versions of windows and mac. To overcome this we can do two things:
+    1. To cehck whether your host can actually run docker natively. Which basically means, is the kernal compatible with the docker images.
+    2. In this case the workaround is that we install a technology called "Docker Toolbox"  which abstracts away the kernal to make it possible for your host to run different docker images. 

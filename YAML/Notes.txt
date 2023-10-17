@@ -1,0 +1,55 @@
+YAML is popular:
+---------------
+> Configuration files are all written in YAML (Comfiguration for Docker, Kubernetes, Ansible, Prometheus, etc.)
+> It is widely used format for different DevOps tools and applications.
+
+What is YAML?
+------------
+> YAML is a data serialization language, like XML and JSON.
+> YAML - YAML Ain't Markup Language.
+> Extensions used - .yml / .yaml
+
+What is Serialization Language?
+------------------------------
+> It means that applications written with different technologies, languages, etc which have different data structures can transfer data to each other using a common agreed on or standard format.
+> Basically a standard format to transfer data between different technologies, languages, etc.
+> Most popular formats are - YAML, JSON and XML.
+
+YAML Format compared to others:
+------------------------------
+> One of the reasons that YAML's popularity has increased compared to others in the past years is it's human readable and intuitive.
+> YAML:
+    microservices:
+        - app: user-authentication
+          port: 9000
+          version: 1.0
+> XML:
+    <microservices>
+        <microservice>
+            <app>user-authentication</app>
+            <port>9000</port>
+            <version>1.0</version>
+        </microservice>
+    </microservices>
+> JSON:
+    {
+        microservices: {
+            {
+                app: "user-authentication",
+                port: 9000,
+                version: "1.0"
+            }
+        }
+    }
+> YAML is superset of JSON: any valid JSON file is also valid YAML file. So, we can write the same configuration in JSON that we have written in YAML also.
+> In XML and JSON we use <> and {} respectively to define configurations.
+> In YAML we define configurations througn line separations and indentation.
+> That's why we can have any line separation and indentation but in YAML we will get error due to one wrong indentation or line separation. This makes YAML the cleanest and most human readable format of all three.
+
+YAML use cases:
+--------------
+> Docker Compose files
+> Prometheus
+> Ansible
+> Kubernetes
+> And many more.

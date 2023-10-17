@@ -1,0 +1,57 @@
+> To deploy the application, it needs to be packaged into its own docker container. This means we will have to build a docker image from our node/flask app and prepare it to be deployed to some environemt.
+
+> In the workflow CI tools like Jenkins, builds the application from the scripts using npm build, etc. And then creates/packages it to a Docker Image out of it and then push it to Docker repo.
+
+> What is a Dockerfile?
+    - In order to build a docker image from an application we basically have to copy the contents of the applicaiton into a Dockerfile. It could be an artifact that we built.
+    - For doing this we will need a blueprint of the images, called, Dockerfile.
+
+> When you adjust a Dockerfile you MUST rebuild the image. Because the older image cannot be overwritten.
+
+> Image Environemt Blueprint vs DOCKERFILE:
+    - Image Environemt:
+        install node
+
+        set MONGO_DB_USERNAME=admin
+        ser MONGO_DB_PWD=password
+
+        create /home/app folder
+
+        copy current folder files to /home/app
+
+        start the app with: "node server.js"
+
+    - DOCKERFILE:
+        FROM node # start by basing it on another image. 
+        
+        ENV MONGO_DB_USERNAME=admin \ # Setting up env variables
+            MONGO_DB_PWD=password
+        
+        RUN mkdir -p /home/app # execute any Linux command
+
+        COPY ./app /home/app # COPY source destination
+
+        WORKDIR /home/app #  set default dir so that next commands executes in /home/app dir
+
+        RUN npm install # will execute npm install in /home/app because of WORKDIR
+
+        CMD ["node", "server.js"] # Executes an entrypoint linux command
+
+    o In this case we are using node as our backend so node is needed in the contianer. So that we can run the node applicaiton. Instead of basing it on some lower level linux image like alpine or something. Otherwise we will need to install node ourselved on it.
+    o So with "FROM node" we will have node installed inside of our image. So, when we start the container and get inside the terminal, we can see that node command is available because is node is installed there.
+    o Setting up env variables here is an alternative to setting them up in docker-compose file. It is better to define env variables in docker-compose file as it will be better to change the env variable values there rather than defining them here and rebuild the image everytime their values change.
+    o The directory created using RUN will be inside of the container and not on the host.
+    o All of the configurations in the DOKCERFILE will be applied to the container and not on the host. COPY is an exception.
+    o COPY - executes on the host machine. So we can copy files in the host, inside of the image.
+    o CMD ["node", "server.js"] => "node server.js" inside the container. The container has node as we are creating the image basing on the node image, which means the container has node preinstalled. [Node is pre-installed because of base image]
+    o You can have multiple RUN commands but only one CMD. CMD = entrypoint command. This marks the Dockerfile that this is the line you need to execute as entrypoint. Here it basically runs the server and that's it.
+    o The node image is based on top of alpine image.
+
+> Build a docker image from Dockerfile:
+    docker build -t my-app:1.0 . => we need to provide the image-name that we wish to give to the built image along with it's version (tag) and the path to the Dockerfile
+
+> start "my-app" container to verify:
+    app start successfully
+    app environemnt is configured correctly
+
+> Jenkins takes the committed App including the Dockerfile and then builds an image based on the Dockerfile and pushes it to a Docker Repo. Then a dev server can pull it from the repo.

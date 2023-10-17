@@ -1,0 +1,28 @@
+Workflow with Docker:
+--------------------
+> Suppose we are creating a Flask application with Postgres as SQL.
+    - So, we will get Postgres image from the Docker Hub and use it in a contianer for our applicaiton.
+> Once we are done developing, we will commit it to a version control system like Git.
+> The Version Control system will trigger a Continuous intergartion like a Jenkins build.
+    - Jenkins build will create artifact from your application. [Docker Image is created]
+> The created artifact/docker image gets pushed to a private docker Repository.
+> The next step could be configured on Jenkins or some other scripts or tools through which that docker image gets deployed on a development server.
+    - So, the dev server pulls the image of the Flask application from the private docker hub and the Postgres image from the Docker hub.
+    - Now we have two containers (one application image from private docker repo and one postgres image from public docker hub) running simulatneously in our dev server. We will ofcourse need to configure them, for them to communicate to each other.
+    - Now a tester or another developer will be able to test the applciation.
+
+Docker in Software Development:
+------------------------------
+> The demo project is build using Node and MongoExpress (Docker Image).
+
+Docker Network:
+--------------
+> Docker creates it's isolated Docker Network where the containers are running in.
+> So, when two containers are deployed in the same Docker Network, they can talk to each other, using just the container name without localhost, port number, etc. Just using the Container name because they are in the same Docker Network.
+> The applications that run outside of Docker Networs, for example a Node.js applicaiton that runs on a Node server, is going to connect to them from outside using the host, localhost and port number.
+> So, later when we package our application into it's own docker image, we are going to have Docker Network with Docker containers (mongoDB container, MongoExpress Contianer) and a Node.js application which we wrote (frontend and backend) in it's own Docker Container and it's going to connect to the MongoDB.
+> And the browser which is running on the host but outside the Docker Network, is going to connect to our JS applicaiton again using the host name and port number. 
+
+Connecting the App with MongoDB:
+-------------------------------
+> To connect with the database we need to give a protocol of the database and URI
